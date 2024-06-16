@@ -15,8 +15,33 @@ model transactional_details {
   equity_name       String?   @db.VarChar(256)
   transaction_date  DateTime? @db.Date
   quantity          Int?
+  total_price   Float?     @db.Float
   price_per_unit    String?   @db.VarChar(256)
-  total_price       String?   @db.VarChar(256)
   target_percentage String?   @db.VarChar(256)
-  target_amount     String?   @db.VarChar(256)
+  target_amount     Float?     @db.Float
 }
+
+// model transactional_calculations_data{
+//   
+//  
+//  
+//  
+//  
+//   
+//  
+//  
+//  
+//   
+//   
+//  
+// }
+
+// model broker_master{
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// }

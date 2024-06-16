@@ -28,8 +28,6 @@ async function getDataById(primaryId) {
             id: primaryId
         }
     })
-    console.log(allFormData);
-    return allFormData
 }
 
 app.get('/transaction', async (req,res)=> {
@@ -78,7 +76,7 @@ app.post('/transaction', async (req, res) => {
         target_amount: body.target_amount
       }
     })
-
+    
     res.status(201).json({"status": "Created Successfully", "data": dbres})
   } catch (e) {
     console.error(e)
