@@ -15,33 +15,57 @@ model transactional_details {
   equity_name       String?   @db.VarChar(256)
   transaction_date  DateTime? @db.Date
   quantity          Int?
-  total_price   Float?     @db.Float
   price_per_unit    String?   @db.VarChar(256)
+  total_price       Float?    @db.Float
   target_percentage String?   @db.VarChar(256)
-  target_amount     Float?     @db.Float
+  target_amount     Float?    @db.Float
 }
 
-// model transactional_calculations_data{
-//   
-//  
-//  
-//  
-//  
-//   
-//  
-//  
-//  
-//   
-//   
-//  
-// }
+model final_ledger_data {
+  id             Int     @id @default(autoincrement())
+  broker         String? @db.VarChar(256)
+  broker_account String? @db.VarChar(256)
+  net_quantity   Int?
+  equity_name    String? @db.VarChar(256)
+}
 
-// model broker_master{
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// }
+model equity_master {
+  equtiy_code String  @id @db.VarChar(256)
+  equity_name String? @db.VarChar(256)
+  market_cap  Int?
+  sector      String? @db.VarChar(256)
+  industry    String? @db.VarChar(256)
+  cap_size    String? @db.VarChar(256)
+}
+
+model account_master {
+  user_id             String         @id @db.VarChar(256)
+  account_number      String?        @db.VarChar(256)
+  dmat_number         String?        @db.VarChar(256)
+  bank_account_number String?        @db.VarChar(256)
+  broker_id           String?        @db.VarChar(256)
+  broker_master       broker_master? @relation(fields: [broker_id], references: [broker_id], onDelete: NoAction, onUpdate: NoAction, map: "account_master_ibfk_1")
+  son_master          son_master[]
+
+  @@index([broker_id], map: "broker_id")
+}
+
+model broker_master {
+  broker_id      String           @id @db.VarChar(256)
+  broker_name    String?          @db.VarChar(256)
+  account_master account_master[]
+  son_master     son_master[]
+}
+
+model son_master {
+  son_id         String          @id @db.VarChar(256)
+  son_amount     String?         @db.VarChar(256)
+  row_id         String?         @db.VarChar(256)
+  broker_id      String?         @db.VarChar(256)
+  user_id        String?         @db.VarChar(256)
+  broker_master  broker_master?  @relation(fields: [broker_id], references: [broker_id], onDelete: NoAction, onUpdate: NoAction, map: "son_master_ibfk_1")
+  account_master account_master? @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "son_master_ibfk_2")
+
+  @@index([broker_id], map: "broker_id")
+  @@index([user_id], map: "user_id")
+}
